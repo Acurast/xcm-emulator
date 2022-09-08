@@ -1,5 +1,5 @@
 [package]
-name = "xcm-simulator-example"
+name = "acurast-sandbox"
 version = "0.9.25"
 authors = ["Parity Technologies <admin@parity.io>"]
 description = "Examples of xcm-simulator usage."
@@ -25,3 +25,6 @@ pallet-xcm = { git = "https://github.com/paritytech/polkadot", default-features 
 polkadot-core-primitives = { git = "https://github.com/paritytech/polkadot", default-features = false, branch = "release-v0.9.25"}
 polkadot-runtime-parachains = { git = "https://github.com/paritytech/polkadot", default-features = false, branch = "release-v0.9.25"}
 polkadot-parachain = { git = "https://github.com/paritytech/polkadot", default-features = false, branch = "release-v0.9.25"}
+
+proxy-pallet = { path = "../../../acurast-substrate/pallets/proxy-pallet" }
+simulator-test-pallet = { path = "../../pallets/test-pallet" }
