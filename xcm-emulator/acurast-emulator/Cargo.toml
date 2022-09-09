@@ -42,6 +42,7 @@ polkadot-parachain = { git = "https://github.com/paritytech/polkadot", default-f
 acurast-runtime = { path = "../../../acurast-substrate/runtime" }
 parachain-template-runtime = { path = "../../../substrate-parachain-template/runtime" }
 #atera-runtime = { path = "../../../polkadot/runtime/atera" }
+polkadot-runtime = { git = "https://github.com/paritytech/polkadot", default-features = false, branch = "release-v0.9.25" }
 
 
 simulator-test-pallet = { path = "../../pallets/test-pallet" }

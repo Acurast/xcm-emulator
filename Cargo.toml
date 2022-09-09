@@ -8,13 +8,13 @@ members = [
 	"xcm-emulator/acurast-emulator",
 ]
 
-[patch."https://github.com/paritytech/polkadot"]
-pallet-xcm = { path = "../polkadot/xcm/pallet-xcm"}
-xcm = { package = "xcm", path = "../polkadot/xcm"}
-xcm-executor = { package = "xcm-executor", path = "../polkadot/xcm/xcm-executor"}
-xcm-builder = { package = "xcm-builder", path = "../polkadot/xcm/xcm-builder" }
-polkadot-parachain = { package = "polkadot-parachain", path = "../polkadot/parachain" }
-polkadot-core-primitives = { package = "polkadot-core-primitives", path = "../polkadot/core-primitives" }
-primitives = { package = "polkadot-primitives", path = "../polkadot/primitives", default-features = false }
-runtime-common = { package = "polkadot-runtime-common", path = "../polkadot/runtime/common", default-features = false }
-polkadot-runtime-parachains = { path = "../polkadot/runtime/parachains" }
+#[patch."https://github.com/paritytech/polkadot"]
+#pallet-xcm = { path = "../polkadot/xcm/pallet-xcm"}
+#xcm = { package = "xcm", path = "../polkadot/xcm"}
+#xcm-executor = { package = "xcm-executor", path = "../polkadot/xcm/xcm-executor"}
+#xcm-builder = { package = "xcm-builder", path = "../polkadot/xcm/xcm-builder" }
+#polkadot-parachain = { package = "polkadot-parachain", path = "../polkadot/parachain" }
+#polkadot-core-primitives = { package = "polkadot-core-primitives", path = "../polkadot/core-primitives" }
+#primitives = { package = "polkadot-primitives", path = "../polkadot/primitives", default-features = false }
+#runtime-common = { package = "polkadot-runtime-common", path = "../polkadot/runtime/common", default-features = false }
+#polkadot-runtime-parachains = { path = "../polkadot/runtime/parachains" }

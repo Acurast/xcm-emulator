@@ -4,10 +4,10 @@ use sp_runtime::AccountId32;
 use xcm_emulator::{decl_test_network, decl_test_parachain, decl_test_relay_chain};
 
 decl_test_relay_chain! {
-	pub struct AteraRelay {
-		Runtime = atera_runtime::Runtime,
-		XcmConfig = atera_runtime::xcm_config::XcmConfig,
-		new_ext = atera_ext(),
+	pub struct PolkadotRelay {
+		Runtime = polkadot_runtime::Runtime,
+		XcmConfig = polkadot_runtime::xcm_config::XcmConfig,
+		new_ext = polkadot_ext(),
 	}
 }
 
@@ -33,7 +33,7 @@ decl_test_parachain! {
 
 decl_test_network! {
 	pub struct Network {
-		relay_chain = AteraRelay,
+		relay_chain = PolkadotRelay,
 		parachains = vec![
 			(2000, AcurastParachain),
 			(2001, CumulusParachain),
@@ -135,8 +135,8 @@ fn default_parachains_host_configuration(
 	}
 }
 
-pub fn atera_ext() -> sp_io::TestExternalities {
-	use atera_runtime::{Runtime, System};
+pub fn polkadot_ext() -> sp_io::TestExternalities {
+	use polkadot_runtime::{Runtime, System};
 
 	let mut t = frame_system::GenesisConfig::default()
 		.build_storage::<Runtime>()
@@ -173,7 +173,6 @@ mod tests {
 	use xcm_emulator::TestExt;
 	type CumulusXcmPallet = pallet_xcm::Pallet<parachain_template_runtime::Runtime>;
 	type AcurastXcmPallet = pallet_xcm::Pallet<acurast_runtime::Runtime>;
-	type AteraXcmPallet = pallet_xcm::Pallet<atera_runtime::Runtime>;
 
 	#[test]
 	fn dmp() {
@@ -182,12 +181,12 @@ mod tests {
 		let remark = acurast_runtime::Call::System(frame_system::Call::<acurast_runtime::Runtime>::remark_with_event {
 			remark: "Hello from Atera".as_bytes().to_vec(),
 		});
-		AteraRelay::execute_with(|| {
-			assert_ok!(atera_runtime::XcmPallet::force_default_xcm_version(
-				atera_runtime::Origin::root(),
+		PolkadotRelay::execute_with(|| {
+			assert_ok!(polkadot_runtime::XcmPallet::force_default_xcm_version(
+				polkadot_runtime::Origin::root(),
 				Some(0)
 			));
-			assert_ok!(atera_runtime::XcmPallet::send_xcm(
+			assert_ok!(polkadot_runtime::XcmPallet::send_xcm(
 				Here,
 				Parachain(2000),
 				Xcm(vec![Transact {
@@ -213,31 +212,36 @@ mod tests {
 	fn ump() {
 		Network::reset();
 
-		AteraRelay::execute_with(|| {
-			let _ = atera_runtime::Balances::deposit_creating(
+		PolkadotRelay::execute_with(|| {
+			let _ = polkadot_runtime::Balances::deposit_creating(
 				&ParaId::from(2000).into_account_truncating(),
 				1_000_000_000_000,
 			);
 		});
 
-		let remark = atera_runtime::Call::System(frame_system::Call::<atera_runtime::Runtime>::remark_with_event {
+		let remark = polkadot_runtime::Call::System(frame_system::Call::<polkadot_runtime::Runtime>::remark_with_event {
 			remark: "Hello from Acurast!".as_bytes().to_vec(),
 		});
 
+		let send_amount = 1_000_000_000_000;
 		AcurastParachain::execute_with(|| {
 			assert_ok!(acurast_runtime::PolkadotXcm::send_xcm(
 				Here,
 				Parent,
-				Xcm(vec![Transact {
-					origin_type: OriginKind::SovereignAccount,
-					require_weight_at_most: INITIAL_BALANCE as u64,
-					call: remark.encode().into(),
-				}]),
+				Xcm(vec![
+						WithdrawAsset((Here, send_amount).into()),
+						buy_execution((Here, send_amount)),
+						Transact {
+							origin_type: OriginKind::SovereignAccount,
+							require_weight_at_most: INITIAL_BALANCE as u64,
+							call: remark.encode().into(),
+						}
+				]),
 			));
 		});
 
-		AteraRelay::execute_with(|| {
-			use atera_runtime::{Event, System};
+		PolkadotRelay::execute_with(|| {
+			use polkadot_runtime::{Event, System};
 			let event_list = System::events();
 			assert!(System::events().iter().any(|r| matches!(
 				r.event,
