@@ -12,10 +12,8 @@ pub mod pallet {
 	use core::fmt::Debug;
 	use frame_support::{dispatch::DispatchResultWithPostInfo, pallet_prelude::*};
 	use frame_system::pallet_prelude::*;
-	use pallet_xcm::{Origin as XcmOrigin, ensure_xcm};
-	use xcm::v2::Instruction::Transact;
-	use xcm::v2::{OriginKind, SendError};
-	use xcm::v2::{Junction::{Parachain}, SendXcm, Xcm, Junctions::{X1}, MultiLocation};
+	use pallet_xcm::{Origin as XcmOrigin};
+	use xcm::v2::{SendXcm};
 
 	/// Configure the pallet by specifying the parameters and types on which it depends.
 	#[pallet::config]
@@ -74,7 +72,7 @@ pub mod pallet {
 			// This function will return an error if the extrinsic is not signed.
 			// https://docs.substrate.io/v3/runtime/origins
 			println!("test_store RUNNING");
-			let who = ensure_signed(origin)?;
+			let _who = ensure_signed(origin)?;
 
 			// Update storage.
 			<TestStorage<T>>::put(something);
