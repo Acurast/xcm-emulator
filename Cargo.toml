@@ -1,9 +1,6 @@
 [workspace]
 members = [
- 	"xcm-simulator",
- 	"xcm-simulator/example",
-	"xcm-simulator/acurast-sandbox",
-	"pallets/*",
+#	"pallets/*",
 	"xcm-emulator",
 	"xcm-emulator/acurast-emulator",
 ]
