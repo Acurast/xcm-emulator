@@ -1,6 +1,5 @@
 [workspace]
 members = [
-#	"pallets/*",
 	"xcm-emulator",
 	"xcm-emulator/acurast-emulator",
 ]
